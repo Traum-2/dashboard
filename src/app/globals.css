@@ -1,26 +1,151 @@
 @import "tailwindcss";
 
+/* ROOT */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #070711;
+  --foreground: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* BASE */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  overflow-x: hidden;
+}
+
+/* NEXT PORTAL FIX */
+nextjs-portal {
+  display: none !important;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* SELECTION */
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: white;
+}
+
+/* IMAGES SHARP */
+img {
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* BUTTONS */
+button {
+  transition: all 0.25s ease;
+}
+body {
+  background: #09090b;
+  color: white;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+
+  letter-spacing: 0.2px;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+h1, h2, h3, h4 {
+  color: rgba(255, 255, 255, 0.95);
+}
+@keyframes floatSlow {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  25% {
+    transform: translate(6px, -8px) rotate(2deg);
+  }
+  50% {
+    transform: translate(-4px, -14px) rotate(-2deg);
+  }
+  75% {
+    transform: translate(-6px, -6px) rotate(1deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(99, 102, 241, 0.25);
+  border-radius: 999px;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.6s ease, opacity 1s ease;
+}
+
+.ripple:active::after {
+  transform: scale(4);
+  opacity: 1;
+  transition: 0s;
+}
+@keyframes floatSlow {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  25% { transform: translate(4px, -6px) rotate(1deg); }
+  50% { transform: translate(-4px, -10px) rotate(-1deg); }
+  75% { transform: translate(-3px, -5px) rotate(1deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+.glow-card {
+  @apply transition-all duration-300 border border-zinc-800 bg-zinc-900/70;
+}
+
+.glow-card:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+  transform: translateY(-2px) scale(1.01);
+}
+.glow-card {
+  @apply transition-all duration-300 border border-zinc-800 bg-zinc-900/70;
+}
+
+.glow-card:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+  transform: translateY(-2px) scale(1.01);
 }

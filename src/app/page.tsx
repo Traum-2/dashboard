@@ -1,65 +1,59 @@
-import Image from "next/image";
+"use client"
+
+import { signIn } from "next-auth/react"
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden text-white">
+
+      {/* Background Glow */}
+      <div className="absolute w-[700px] h-[700px] bg-indigo-600 rounded-full blur-[200px] opacity-10 top-[-250px] left-[-250px]" />
+      <div className="absolute w-[600px] h-[600px] bg-fuchsia-600 rounded-full blur-[200px] opacity-10 bottom-[-250px] right-[-250px]" />
+
+      {/* Subtle Grid */}
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:22px_22px]" />
+
+      {/* LOGIN CARD */}
+      <div className="w-[460px] rounded-3xl border border-zinc-800 bg-zinc-950/70 backdrop-blur-2xl p-12 shadow-2xl relative z-10">
+
+        {/* Badge */}
+        <div className="inline-flex px-3 py-1 rounded-full bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 text-xs mb-6">
+          COMMUNITY ACCESS PORTAL
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+
+        {/* Title */}
+        <h1 className="text-5xl font-extrabold leading-tight">
+          🚀 TRAUM2
+          <br />
+          <span className="text-indigo-400">DASHBOARD</span>
+        </h1>
+
+        {/* Description */}
+        <p className="text-zinc-400 mt-5 text-base leading-relaxed">
+          Melde dich mit deinem Discord Account an, um Zugriff auf die Community,
+          Staff-Systeme, Social Links und Live Statistiken zu erhalten.
+        </p>
+
+        {/* Divider */}
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
+
+        {/* Login Button */}
+        <button
+          onClick={() =>
+            signIn("discord", { callbackUrl: "/dashboard" })
+          }
+          className="w-full py-4 rounded-2xl bg-[#5865F2] hover:bg-[#4752c4] transition-all duration-300 font-semibold flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/20 active:scale-[0.98]"
+        >
+          <span className="text-lg">🔐</span>
+          Mit Discord anmelden
+        </button>
+
+        {/* Footer */}
+        <p className="text-xs text-zinc-600 text-center mt-6">
+          Secure login via Discord OAuth2 • TRAUM2 Community System
+        </p>
+
+      </div>
+    </main>
+  )
 }
