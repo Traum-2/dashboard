@@ -29,8 +29,6 @@ export default function StaffPage() {
 
   useEffect(() => {
     load()
-    const interval = setInterval(load, 60000)
-    return () => clearInterval(interval)
   }, [])
 
   const getUsers = (role: string) =>
@@ -39,7 +37,6 @@ export default function StaffPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white px-6 py-16">
 
-      {/* BACK BUTTON */}
       <div className="flex justify-center mb-14">
         <Link href="/dashboard">
           <button className="px-6 py-3 rounded-2xl border border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition font-bold">
@@ -48,7 +45,6 @@ export default function StaffPage() {
         </Link>
       </div>
 
-      {/* TITLE */}
       <div className="text-center mb-16">
         <h1 className="text-5xl font-extrabold">
           👥 Unser Staff-team
@@ -58,7 +54,6 @@ export default function StaffPage() {
         </p>
       </div>
 
-      {/* CONTENT */}
       <div className="max-w-6xl mx-auto space-y-10">
 
         {ROLES.map((role) => {
@@ -67,21 +62,18 @@ export default function StaffPage() {
           return (
             <div
               key={role.key}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition duration-300 hover:border-purple-500/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.20)]"
+              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
             >
 
-              {/* HEADER */}
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-zinc-100">
+                <h2 className="text-xl font-bold">
                   {role.title}
                 </h2>
-
                 <p className="text-sm text-zinc-500 mt-1">
                   {role.desc}
                 </p>
               </div>
 
-              {/* USERS GRID */}
               {users.length > 0 ? (
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
@@ -90,22 +82,22 @@ export default function StaffPage() {
                       key={user.id}
                       className="flex items-center gap-4 p-4 rounded-xl border border-zinc-800 bg-zinc-950"
                     >
-
                       <img
-                        src={user.avatar || ""}
+                        src={
+                          user.avatar ??
+                          "https://cdn.discordapp.com/embed/avatars/0.png"
+                        }
                         className="w-12 h-12 rounded-xl"
                       />
 
                       <div>
-                        <p className="text-base font-semibold text-zinc-100">
+                        <p className="font-semibold">
                           {user.name}
                         </p>
-
                         <p className="text-xs text-zinc-500">
                           Discord Member
                         </p>
                       </div>
-
                     </div>
                   ))}
 
