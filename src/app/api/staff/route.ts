@@ -24,14 +24,14 @@ export async function GET() {
     )
 
     if (!response.ok) {
-      const errorText = await response.text()
+      const error = await response.text()
 
-      console.log(errorText)
+      console.log(error)
 
       return NextResponse.json(
         {
           error: "Discord API Error",
-          details: errorText,
+          details: error,
         },
         { status: response.status }
       )
@@ -46,16 +46,15 @@ export async function GET() {
         )
       )
       .map((member) => {
-        const userRoles = member.roles
+        const mappedRoles = member.roles
           .filter((role) =>
             Object.values(ROLE_MAP).includes(role)
           )
-          .map(
-            (role) =>
-              Object.entries(ROLE_MAP).find(
-                ([, id]) => id === role
-              )?.[0]
-          )
+          .map((role) => {
+            return Object.entries(ROLE_MAP).find(
+              ([, id]) => id === role
+            )?.[0]
+          })
           .filter(Boolean)
 
         return {
@@ -65,8 +64,8 @@ export async function GET() {
             member.user.username,
           avatar: member.user.avatar
             ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`
-            : `https://cdn.discordapp.com/embed/avatars/0.png`,
-          roles: userRoles,
+            : null,
+          roles: mappedRoles,
         }
       })
 
@@ -75,9 +74,7 @@ export async function GET() {
     console.error(error)
 
     return NextResponse.json(
-      {
-        error: "Internal Server Error",
-      },
+      { error: "Server Error" },
       { status: 500 }
     )
   }
