@@ -1,69 +1,83 @@
 import { NextResponse } from "next/server"
 
-const TOKEN = process.env.DISCORD_TOKEN!
-const GUILD_ID = process.env.DISCORD_GUILD_ID!
+const TOKEN = process.env.DISCORD_TOKEN
+const GUILD_ID = process.env.DISCORD_GUILD_ID
 
 const ROLE_MAP = {
   admin: "1443978740009930892",
   dev: "1488168427926327377",
   headmod: "1461739216269480122",
   mod: "1495462076565557431",
-  twitchmod: "1443978421272051853"
+  twitchmod: "1443978421272051853",
 }
 
 export async function GET() {
   try {
-    const res = await fetch(
-      `https://discord.com/api/guilds/${GUILD_ID}/members?limit=1000`,
+    const response = await fetch(
+      `https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=1000`,
       {
         headers: {
           Authorization: `Bot ${TOKEN}`,
-          "Content-Type": "application/json"
-        }
+        },
+        cache: "no-store",
       }
     )
 
-    if (!res.ok) {
+    if (!response.ok) {
+      const errorText = await response.text()
+
+      console.log(errorText)
+
       return NextResponse.json(
-        { error: "Discord API Error" },
-        { status: res.status }
+        {
+          error: "Discord API Error",
+          details: errorText,
+        },
+        { status: response.status }
       )
     }
 
-    const members = await res.json()
+    const members = await response.json()
 
     const staff = members
-      .filter((member: any) =>
-        member.roles?.some((role: string) =>
+      .filter((member) =>
+        member.roles?.some((role) =>
           Object.values(ROLE_MAP).includes(role)
         )
       )
-      .map((member: any) => {
-        const roles = member.roles.filter((r: string) =>
-          Object.values(ROLE_MAP).includes(r)
-        )
-
-        const mappedRoles = roles.map((r: string) =>
-          Object.entries(ROLE_MAP).find(([, id]) => id === r)?.[0]
-        )
+      .map((member) => {
+        const userRoles = member.roles
+          .filter((role) =>
+            Object.values(ROLE_MAP).includes(role)
+          )
+          .map(
+            (role) =>
+              Object.entries(ROLE_MAP).find(
+                ([, id]) => id === role
+              )?.[0]
+          )
+          .filter(Boolean)
 
         return {
           id: member.user.id,
-          name: member.user.username,
+          name:
+            member.user.global_name ||
+            member.user.username,
           avatar: member.user.avatar
             ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`
-            : null,
-          roles: mappedRoles
+            : `https://cdn.discordapp.com/embed/avatars/0.png`,
+          roles: userRoles,
         }
       })
 
     return NextResponse.json({ staff })
-
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    console.error(error)
 
     return NextResponse.json(
-      { error: "Server Error" },
+      {
+        error: "Internal Server Error",
+      },
       { status: 500 }
     )
   }
