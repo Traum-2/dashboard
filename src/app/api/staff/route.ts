@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NextResponse } from "next/server"
 
 const TOKEN = process.env.DISCORD_TOKEN
@@ -40,17 +42,17 @@ export async function GET() {
     const members = await response.json()
 
     const staff = members
-      .filter((member) =>
-        member.roles?.some((role) =>
+      .filter((member: any) =>
+        member.roles?.some((role: any) =>
           Object.values(ROLE_MAP).includes(role)
         )
       )
-      .map((member) => {
+      .map((member: any) => {
         const mappedRoles = member.roles
-          .filter((role) =>
+          .filter((role: any) =>
             Object.values(ROLE_MAP).includes(role)
           )
-          .map((role) => {
+          .map((role: any) => {
             return Object.entries(ROLE_MAP).find(
               ([, id]) => id === role
             )?.[0]
