@@ -79,29 +79,25 @@ export default async function Dashboard() {
 
             <div className="grid md:grid-cols-2 gap-6">
 
-              {/* STAFF (DEAKTIVIERT) */}
-              <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 opacity-60 cursor-not-allowed`}>
-                <div className="text-4xl">👥</div>
-                <h4 className="text-2xl font-semibold mt-6">Staff-Team</h4>
-                <p className="text-zinc-400 text-base mt-2">
-                  Übersicht aller Teammitglieder
-                </p>
-                <p className="text-purple-400 mt-4 text-sm">
-                  Zurzeit nicht verfügbar
-                </p>
-              </div>
+              <Link href="/staff">
+                <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 ${hoverEffect}`}>
+                  <div className="text-4xl">👥</div>
+                  <h4 className="text-2xl font-semibold mt-6">Staff-Team</h4>
+                  <p className="text-zinc-400 text-base mt-2">
+                    Übersicht aller Teammitglieder
+                  </p>
+                </div>
+              </Link>
 
-              {/* FEEDBACK (DEAKTIVIERT) */}
-              <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 opacity-60 cursor-not-allowed`}>
-                <div className="text-4xl">💡</div>
-                <h4 className="text-2xl font-semibold mt-6">Community-Feedback</h4>
-                <p className="text-zinc-400 text-base mt-2">
-                  Bugs, Vorschläge & Beschwerden
-                </p>
-                <p className="text-purple-400 mt-4 text-sm">
-                  Zurzeit nicht verfügbar
-                </p>
-              </div>
+              <Link href="/feedback">
+                <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 ${hoverEffect}`}>
+                  <div className="text-4xl">💡</div>
+                  <h4 className="text-2xl font-semibold mt-6">Community-Feedback</h4>
+                  <p className="text-zinc-400 text-base mt-2">
+                    Bugs, Vorschläge & Beschwerden
+                  </p>
+                </div>
+              </Link>
 
             </div>
 
