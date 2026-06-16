@@ -6,10 +6,10 @@ import Topbar from "@/components/Topbar"
 export default async function Dashboard() {
   const session = await getServerSession()
 
-  // 🔒 HARTE AUTH ABSICHERUNG (KEIN WHITE SCREEN / KEIN HÄNGEN)
+  // AUTH
   if (!session) {
-  redirect("/")
-}
+    redirect("/login")
+  }
 
   const hoverEffect =
     "transition duration-200 " +
@@ -22,8 +22,7 @@ export default async function Dashboard() {
   const panelHover =
     "transition duration-200 " +
     "hover:scale-[1.01] " +
-    "hover:border-purple-500/50 " +
-    "hover:shadow-[0_0_40px_rgba(168,85,247,0.20)]"
+    "hover:border-purple-500/50"
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white overflow-hidden relative">
@@ -40,7 +39,9 @@ export default async function Dashboard() {
         {/* HERO */}
         <div className="mt-28 text-center">
 
-          <div className="text-7xl mb-6">🏠</div>
+          <div className="text-7xl mb-6">
+            🏠
+          </div>
 
           <div className="inline-flex px-5 py-2 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-300 text-sm mb-6">
             🚀 TRAUM2 COMMUNITY HUB
@@ -69,33 +70,60 @@ export default async function Dashboard() {
             <div className="flex items-center justify-between mb-12">
 
               <div>
-                <p className="text-zinc-400 text-base">Verwaltung</p>
-                <h3 className="text-4xl font-bold">Community Tools</h3>
+                <p className="text-zinc-400 text-base">
+                  Verwaltung
+                </p>
+
+                <h3 className="text-4xl font-bold">
+                  Community Tools
+                </h3>
               </div>
 
-              <div className="text-5xl">⚡</div>
+              <div className="text-5xl">
+                ⚡
+              </div>
 
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
 
-              <Link href="/staff">
-                <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 ${hoverEffect}`}>
-                  <div className="text-4xl">👥</div>
-                  <h4 className="text-2xl font-semibold mt-6">Staff-Team</h4>
-                  <p className="text-zinc-400 text-base mt-2">
-                    Übersicht aller Teammitglieder
-                  </p>
-                </div>
-              </Link>
+              {/* STAFF DISABLED (bleibt blockiert) */}
+              <div className="rounded-3xl border border-zinc-800 bg-zinc-800/60 p-8 opacity-60 cursor-not-allowed relative overflow-hidden">
 
+                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-xs">
+                  Nicht verfügbar
+                </div>
+
+                <div className="text-4xl">
+                  👥
+                </div>
+
+                <h4 className="text-2xl font-semibold mt-6">
+                  Staff-Team
+                </h4>
+
+                <p className="text-zinc-400 text-base mt-2">
+                  Übersicht aller Teammitglieder
+                </p>
+
+              </div>
+
+              {/* FEEDBACK AKTIV (jetzt klickbar) */}
               <Link href="/feedback">
                 <div className={`rounded-3xl border border-zinc-800 bg-zinc-800 p-8 ${hoverEffect}`}>
-                  <div className="text-4xl">💡</div>
-                  <h4 className="text-2xl font-semibold mt-6">Community-Feedback</h4>
+
+                  <div className="text-4xl">
+                    💡
+                  </div>
+
+                  <h4 className="text-2xl font-semibold mt-6">
+                    Community-Feedback
+                  </h4>
+
                   <p className="text-zinc-400 text-base mt-2">
                     Bugs, Vorschläge & Beschwerden
                   </p>
+
                 </div>
               </Link>
 
@@ -105,10 +133,14 @@ export default async function Dashboard() {
 
           {/* SOCIALS */}
           <Link href="/socials" className="h-full">
+
             <div className={`rounded-[36px] border border-zinc-800 bg-zinc-900 p-8 h-full flex flex-col justify-between ${hoverEffect}`}>
 
               <div>
-                <div className="text-5xl mb-6">🌐</div>
+
+                <div className="text-5xl mb-6">
+                  🌐
+                </div>
 
                 <h3 className="text-2xl font-bold mb-6">
                   Socials
@@ -123,6 +155,7 @@ export default async function Dashboard() {
               </div>
 
             </div>
+
           </Link>
 
         </div>
@@ -131,28 +164,49 @@ export default async function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
 
           <Link href="/twitch-bewerbung">
+
             <div className={`rounded-[32px] border border-zinc-800 bg-zinc-900 p-8 ${hoverEffect}`}>
-              <div className="text-4xl">🎮</div>
-              <h3 className="text-2xl font-bold mt-6">Twitch Bewerbung</h3>
+
+              <div className="text-4xl">
+                🎮
+              </div>
+
+              <h3 className="text-2xl font-bold mt-6">
+                Twitch Bewerbung
+              </h3>
+
               <p className="text-zinc-400 mt-2 text-base">
                 Moderator Bewerbung für Twitch
               </p>
+
             </div>
+
           </Link>
 
           <Link href="/discord-bewerbung">
+
             <div className={`rounded-[32px] border border-zinc-800 bg-zinc-900 p-8 ${hoverEffect}`}>
-              <div className="text-4xl">💬</div>
-              <h3 className="text-2xl font-bold mt-6">Discord Bewerbung</h3>
+
+              <div className="text-4xl">
+                💬
+              </div>
+
+              <h3 className="text-2xl font-bold mt-6">
+                Discord Bewerbung
+              </h3>
+
               <p className="text-zinc-400 mt-2 text-base">
                 Werde Teil des Discord Teams
               </p>
+
             </div>
+
           </Link>
 
         </div>
 
       </div>
+
     </main>
   )
 }

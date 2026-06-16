@@ -1,48 +1,87 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NextResponse } from "next/server"
 
-export async function POST(req: Request) {
+const TOKEN = process.env.DISCORD_TOKEN
+const GUILD_ID = process.env.DISCORD_GUILD_ID
+
+const ROLE_MAP = {
+  admin: "1443978740009930892",
+  dev: "1488168427926327377",
+  headmod: "1461739216269480122",
+  mod: "1495462076565557431",
+  twitchmod: "1443978421272051853",
+}
+
+export async function GET() {
   try {
-    const { type, name, message } = await req.json()
+    const response = await fetch(
+      `https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=1000`,
+      {
+        headers: {
+          Authorization: `Bot ${TOKEN}`,
+        },
+        cache: "no-store",
+      }
+    )
 
-    const webhookUrl = process.env.DISCORD_WEBHOOK_FEEDBACK
+    if (!response.ok) {
+      const errorText = await response.text()
 
-    if (!webhookUrl) {
-      return NextResponse.json({ error: "no webhook" }, { status: 500 })
+      console.log(errorText)
+
+      return NextResponse.json(
+        {
+          error: "Discord API Error",
+          details: errorText,
+        },
+        { status: response.status }
+      )
     }
 
-    const title =
-      type === "bug"
-        ? "⚠️ Bug & Fehlerreport"
-        : type === "idea"
-        ? "💡 Verbesserungen & Ideen"
-        : "🕶️ Anonyme Beschwerde"
+    const members = await response.json()
 
-    await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        embeds: [
-          {
-            title: title,
+    const staff = members
+      .filter((member: any) =>
+        member.roles?.some((role: any) =>
+          Object.values(ROLE_MAP).includes(role)
+        )
+      )
+      .map((member: any) => {
+        const mappedRoles = member.roles
+          .filter((role: any) =>
+            Object.values(ROLE_MAP).includes(role)
+          )
+          .map((role: any) => {
+            return Object.entries(ROLE_MAP).find(
+              ([, id]) => id === role
+            )?.[0]
+          })
+          .filter(Boolean)
 
-            color: 0x8b5cf6,
+        return {
+          id: member.user.id,
 
-            description:
-              `**👤 Name**\n${name || "Unbekannt"}\n\n` +
-              `**📝 Nachricht**\n${message || "-"}`,
+          name:
+            member.user.global_name ||
+            member.user.username,
 
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      }),
-    })
+          avatar: member.user.avatar
+            ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`
+            : `https://cdn.discordapp.com/embed/avatars/0.png`,
 
-    return NextResponse.json({ success: true })
-  } catch (err) {
+          roles: mappedRoles,
+        }
+      })
+
+    return NextResponse.json({ staff })
+  } catch (error) {
+    console.error(error)
+
     return NextResponse.json(
-      { error: "server error" },
+      {
+        error: "Server Error",
+      },
       { status: 500 }
     )
   }
